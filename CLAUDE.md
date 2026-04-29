@@ -17,7 +17,9 @@ A book-style technical guide to CakePHP 5.x internals.
 |---|---|---|---|
 | 1 | The Architecture of CakePHP: A Map Before the Journey | `docs/book/chapter-01.md` | DONE |
 | 2 | The HTTP Layer: Tracing One Request from Wire to Response | `docs/book/chapter-02.md` | DONE |
-| 3+ | TBD | — | not started |
+| 3 | Routing — URL strings to controller/action arrays | — | not started |
+| 4 | The ORM Save Pipeline: From Entity to SQL INSERT | `docs/book/chapter-04.md` | DONE |
+| 5+ | TBD | — | not started |
 
 ## Chapter 1 Key Decisions (don't repeat in later chapters)
 - Defined all 6 design patterns (MVC, PSR-15 middleware, Registry, Observer/Events, Traits, DI)
@@ -70,6 +72,21 @@ Validation:8, View:53
 Topic: Routing — how URL strings become controller/action/pass parameter arrays.
 Reader outcome: able to define any route pattern and debug routing mismatches.
 Key files: src/Routing/Router.php, src/Routing/RouteBuilder.php, src/Routing/Route/Route.php
+
+## Chapter 4 Key Decisions (don't repeat in later chapters)
+- Explained dirty-field tracking (entity->isDirty(), extract(cols, true))
+- Explained fluent query interface (insert→values→execute chain)
+- Explained prepared statements as the SQL-injection defense mechanism
+- Explained the two InsertQuery classes (ORM vs Database namespace, ORM extends DB)
+- Covered ValuesExpression::sql() generating :c0/:c1 placeholders at line 214
+- Traced QueryCompiler::_insertParts order (line 79): comment→with→insert→values→epilog
+- Covered _buildInsertPart (line 422) and _buildValuesPart (line 446)
+- Traced Connection::run() disconnect-retry + read/write replica routing (line 299)
+- Covered Driver::prepare() calling PDO::prepare(sql) at line 399
+- Covered Driver::executeStatement() with optional query logging at line 331
+- Covered Statement::execute() as the final PDOStatement::execute() call at line 142
+- Documented all 5 save events with file:line and recommended use-cases
+- Explained type mapping (DateTime → SQL string) as part of bindValue flow
 
 ## User Preferences
 - No emojis
